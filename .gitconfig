@@ -1,0 +1,22 @@
+[user]
+    name = ivan111
+    email = i@vanya.jp.net
+[core]
+    editor = vim
+[alias]
+    st = status
+    br = branch
+    df = diff
+    co = commit
+    ch = checkout
+
+    # %h: abbreviated commit hash
+    # %d: ref names, like the --decorate option of git-log[1]
+    # %s: subject
+    # %cr: committer date, relative
+    lg = log --graph -40 --pretty=format:'%C(red)%h%C(reset) %C(yellow)%d%C(reset) %s %C(green)(%cr)'
+    ldf = log -1 --patch
+[merge]
+    ff = false
+[credential]
+    helper = cache --timeout=36000
