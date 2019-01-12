@@ -8,8 +8,11 @@
 call plug#begin()
 
 Plug 'Yggdroot/indentLine'
+Plug 'Shougo/neocomplcache.vim'
 
 call plug#end()
+
+let g:neocomplcache_enable_at_startup = 1
 
 "----------------------------------------------------------------------------
 
