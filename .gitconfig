@@ -7,8 +7,8 @@
     st = status
     br = branch
     df = diff
-    co = commit
-    ch = checkout
+    ci = commit
+    co = checkout
 
     # %h: abbreviated commit hash
     # %d: ref names, like the --decorate option of git-log[1]
