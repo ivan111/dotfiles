@@ -1,18 +1,32 @@
+augroup vimrc
+  autocmd!
+augroup END
+
 " Plugin
 "----------------------------------------------------------------------------
 
-" :so[urce] % to reload .vimrc and :PlugInstall to install plugins.
-" :so[urce] % to reload .vimrc and :PlugClean to remove plugins.
+" :so[urce] % to reload .vimrc
+" :PlugInstall to install plugins.
 " :PlugUpdate to update plugins.
+" :PlugClean to remove plugins.
 
 call plug#begin()
 
 Plug 'Yggdroot/indentLine'
 Plug 'Shougo/neocomplcache.vim'
+Plug 'kovisoft/slimv'
 
 call plug#end()
 
+" [Plugin] neocomplcache
+
 let g:neocomplcache_enable_at_startup = 1
+
+" [Plugin] slimv
+
+let g:slimv_swank_cmd = '! tmux new-window -d -n REPL-SBCL "sbcl --load ~/.vim/plugged/slimv/slime/start-swank.lisp"'
+let g:lisp_rainbow = 1
+let g:slimv_repl_split = 4  " rightbelow vsplit
 
 "----------------------------------------------------------------------------
 
@@ -37,6 +51,10 @@ set hidden
 set number
 
 set nowrap
+
+" cursor
+set nocursorline
+autocmd vimrc InsertEnter,InsertLeave * set cursorline!
 
 
 " status line
@@ -73,19 +91,28 @@ set hlsearch
 
 let mapleader = "\<Space>"
 
-" Switch Buffers
-nnoremap <silent> bn :bnext<cr>
-nnoremap <silent> bp :bprevious<cr>
+" edit .vimrc
+nnoremap <leader>ev :vsplit $MYVIMRC<CR>
 
-" Switch Windows
-nnoremap <silent> wn <C-W>w
-nnoremap <silent> wp <C-W>W
+" Buffers
+nnoremap <silent> <leader>bl :buffers<CR>:buffer<Space>
+nnoremap <silent> <leader>bn :bnext<CR>
+nnoremap <silent> <leader>bp :bprevious<CR>
 
-" Switch Tabs
-nnoremap <silent> te :tabedit<CR>
-nnoremap <silent> tc :tabclose<CR>
-nnoremap <silent> tn :tabnext<CR>
-nnoremap <silent> tp :tabprevious<CR>
+" Windows
+nnoremap <silent> <leader>wn <C-W>w
+nnoremap <silent> <leader>wp <C-W>W
+
+nnoremap <silent> <leader>wh <C-W>H
+nnoremap <silent> <leader>wj <C-W>J
+nnoremap <silent> <leader>wk <C-W>K
+nnoremap <silent> <leader>wl <C-W>L
+
+" quickfix
+nnoremap <silent> <leader>co :copen<CR>
+nnoremap <silent> <leader>cq :cclose<CR>
+nnoremap <silent> <leader>cn :cnext<CR>
+nnoremap <silent> <leader>cp :cprevious<CR>
 
 " no highlight
 nnoremap <Esc><Esc> :<C-u>nohlsearch<CR>
@@ -98,16 +125,15 @@ nnoremap <Leader>q :wq<CR>
 nnoremap <Leader>m :make<CR>
 
 " clip board
-vmap <Leader>y "+y
-vmap <Leader>d "+d
-vmap <Leader>p "+p
-vmap <Leader>P "+P
+vnoremap <Leader>y "+y
+vnoremap <Leader>d "+d
+vnoremap <Leader>p "+p
+vnoremap <Leader>P "+P
 
-nmap <Leader>y "+y
-nmap <Leader>d "+d
-nmap <Leader>p "+p
-nmap <Leader>P "+P
-
+nnoremap <Leader>y "+y
+nnoremap <Leader>d "+d
+nnoremap <Leader>p "+p
+nnoremap <Leader>P "+P
 
 " tab
 "----------------------------------------------------------------------------
@@ -124,6 +150,8 @@ set smartindent
 " template
 "----------------------------------------------------------------------------
 
-autocmd BufNewFile *.py 0r ~/.vim/templates/template.py
-autocmd BufNewFile *.c 0r ~/.vim/templates/template.c
-autocmd BufNewFile *.html 0r ~/.vim/templates/template.html
+" augroup vimrc
+"     autocmd BufNewFile *.py 0r ~/.vim/templates/template.py
+"     autocmd BufNewFile *.c 0r ~/.vim/templates/template.c
+"     autocmd BufNewFile *.html 0r ~/.vim/templates/template.html
+" augroup END
