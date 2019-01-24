@@ -1,3 +1,11 @@
+if has('vim_starting')
+    if has('nvim')
+        let s:my_vim_dir = stdpath('config')
+    else
+        let s:my_vim_dir = expand('~.vim')
+    endif
+endif
+
 augroup vimrc
   autocmd!
 augroup END
@@ -13,20 +21,46 @@ augroup END
 call plug#begin()
 
 Plug 'Yggdroot/indentLine'
-Plug 'Shougo/neocomplcache.vim'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-fugitive'
+Plug 'airblade/vim-gitgutter'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'kovisoft/slimv'
+
+if has('nvim')
+    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+else
+    Plug 'Shougo/neocomplcache.vim'
+endif
 
 call plug#end()
 
-" [Plugin] neocomplcache
 
-let g:neocomplcache_enable_at_startup = 1
+if has('nvim')
+    " [Plugin] deoplete
+
+    let g:deoplete#enable_at_startup = 1
+else
+    " [Plugin] neocomplcache
+
+    let g:neocomplcache_enable_at_startup = 1
+endif
+
 
 " [Plugin] slimv
 
-let g:slimv_swank_cmd = '! tmux new-window -d -n REPL-SBCL "sbcl --load ~/.vim/plugged/slimv/slime/start-swank.lisp"'
+let g:slimv_swank_cmd = '! tmux new-window -d -n REPL-SBCL "sbcl --load ' . s:my_vim_dir . '/plugged/slimv/slime/start-swank.lisp"'
 let g:lisp_rainbow = 1
 let g:slimv_repl_split = 4  " rightbelow vsplit
+let g:paredit_mode = 0
+
+
+" [Plugin] commentary
+
+" Usage: gc{motion}
+" for example, gcap to comment out a paragraph
 
 "----------------------------------------------------------------------------
 
@@ -92,21 +126,55 @@ set hlsearch
 let mapleader = "\<Space>"
 
 " edit .vimrc
-nnoremap <leader>ev :vsplit $MYVIMRC<CR>
+nnoremap <leader>ev :tabedit $MYVIMRC<CR>
+
+" terminal
+tnoremap <Esc> <C-\><C-n>
+
+" fzf
+nnoremap <silent> <leader>fb :Buffers<CR>
+nnoremap <silent> <leader>ff :Files<CR>
 
 " Buffers
 nnoremap <silent> <leader>bl :buffers<CR>:buffer<Space>
 nnoremap <silent> <leader>bn :bnext<CR>
 nnoremap <silent> <leader>bp :bprevious<CR>
+nnoremap <silent> <leader>bd :bdelete<CR>
 
 " Windows
 nnoremap <silent> <leader>wn <C-W>w
 nnoremap <silent> <leader>wp <C-W>W
 
-nnoremap <silent> <leader>wh <C-W>H
-nnoremap <silent> <leader>wj <C-W>J
-nnoremap <silent> <leader>wk <C-W>K
-nnoremap <silent> <leader>wl <C-W>L
+nnoremap <silent> <leader>wT <C-W>T
+
+nnoremap <silent> <leader>wc <C-W>c
+nnoremap <silent> <leader>wo <C-W>o
+
+nnoremap <silent> <leader>ws <C-W>s
+nnoremap <silent> <leader>wv <C-W>v
+
+nnoremap <silent> <leader>wh <C-W>h
+nnoremap <silent> <leader>wj <C-W>j
+nnoremap <silent> <leader>wk <C-W>k
+nnoremap <silent> <leader>wl <C-W>l
+
+nnoremap <silent> <leader>wH <C-W>H
+nnoremap <silent> <leader>wJ <C-W>J
+nnoremap <silent> <leader>wK <C-W>K
+nnoremap <silent> <leader>wL <C-W>L
+
+" Tabs
+nnoremap <silent> <leader>te :tabedit<Space>
+
+nnoremap <silent> <leader>tn :tabnext<CR>
+nnoremap <silent> <leader>tp :tabprevious<CR>
+
+nnoremap <silent> <leader>tc :tabclose<CR>
+nnoremap <silent> <leader>to :tabonly<CR>
+
+" Args
+nnoremap <silent> <leader>an :next<CR>
+nnoremap <silent> <leader>ap :previous<CR>
 
 " quickfix
 nnoremap <silent> <leader>co :copen<CR>
@@ -118,7 +186,7 @@ nnoremap <silent> <leader>cp :cprevious<CR>
 nnoremap <Esc><Esc> :<C-u>nohlsearch<CR>
 
 " save file
-nnoremap <Leader>w :w<CR>
+nnoremap <Leader>wr :w<CR>
 nnoremap <Leader>q :wq<CR>
 
 " compile
@@ -134,6 +202,10 @@ nnoremap <Leader>y "+y
 nnoremap <Leader>d "+d
 nnoremap <Leader>p "+p
 nnoremap <Leader>P "+P
+
+
+" get current buffer's directory
+cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h') . '/' : '%%'
 
 " tab
 "----------------------------------------------------------------------------
@@ -151,7 +223,7 @@ set smartindent
 "----------------------------------------------------------------------------
 
 " augroup vimrc
-"     autocmd BufNewFile *.py 0r ~/.vim/templates/template.py
-"     autocmd BufNewFile *.c 0r ~/.vim/templates/template.c
-"     autocmd BufNewFile *.html 0r ~/.vim/templates/template.html
+"     autocmd BufNewFile *.py   execute '0read' . s:my_vim_dir . '/templates/a.py'
+"     autocmd BufNewFile *.c    execute '0read' . s:my_vim_dir . '/templates/a.c'
+"     autocmd BufNewFile *.html execute '0read' . s:my_vim_dir . '/templates/a.html'
 " augroup END
