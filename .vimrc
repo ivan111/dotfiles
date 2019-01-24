@@ -25,6 +25,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
+Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'kovisoft/slimv'
@@ -36,6 +37,12 @@ else
 endif
 
 call plug#end()
+
+
+" [Plugin] Ack
+if executable('ag')
+    let g:ackprg = 'ag --vimgrep'
+endif
 
 
 if has('nvim')
@@ -178,7 +185,7 @@ nnoremap <silent> <leader>ap :previous<CR>
 
 " quickfix
 nnoremap <silent> <leader>co :copen<CR>
-nnoremap <silent> <leader>cq :cclose<CR>
+nnoremap <silent> <leader>cc :cclose<CR>
 nnoremap <silent> <leader>cn :cnext<CR>
 nnoremap <silent> <leader>cp :cprevious<CR>
 
