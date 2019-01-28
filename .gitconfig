@@ -6,9 +6,8 @@
 [alias]
     st = status
     br = branch
-    df = diff
-    dt = difftool
-    dtc = difftool --cached
+    df = difftool
+    dfc = difftool --cached
     ci = commit
     co = checkout
 

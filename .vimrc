@@ -1,3 +1,13 @@
+if has('win32') || has('win32unix') || has('win64')
+    set encoding=utf-8
+    set fileencoding=utf-8
+    set fileencodings=utf-8,cp932
+    set fileformat=unix
+    set fileformats=unix,dos
+
+    set backspace=indent,eol,start
+endif
+
 if has('vim_starting')
     if has('nvim')
         let s:my_vim_dir = stdpath('config')
@@ -20,6 +30,8 @@ augroup END
 
 call plug#begin()
 
+Plug 'sickill/vim-monokai'
+Plug 'vim-syntastic/syntastic'
 Plug 'Yggdroot/indentLine'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-surround'
@@ -29,6 +41,7 @@ Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'kovisoft/slimv'
+Plug 'jgdavey/tslime.vim'
 
 if has('nvim')
     Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
@@ -45,27 +58,42 @@ if executable('ag')
 endif
 
 
+" [Plugin] syntastic
+let g:syntastic_mode_map = {
+            \ "mode": "passive",
+            \ "active_filetypes": [],
+            \ "passive_filetypes": [] }
+let g:syntastic_always_populate_loc_list = 1
+let g:syntastic_check_on_open = 1
+let g:syntastic_check_on_wq = 0
+
+
 if has('nvim')
     " [Plugin] deoplete
-
     let g:deoplete#enable_at_startup = 1
 else
     " [Plugin] neocomplcache
-
     let g:neocomplcache_enable_at_startup = 1
 endif
 
 
 " [Plugin] slimv
-
 let g:slimv_swank_cmd = '! tmux new-window -d -n REPL-SBCL "sbcl --load ' . s:my_vim_dir . '/plugged/slimv/slime/start-swank.lisp"'
 let g:lisp_rainbow = 1
 let g:slimv_repl_split = 4  " rightbelow vsplit
 let g:paredit_mode = 0
 
 
-" [Plugin] commentary
+" [Plugin] tslime
+let g:tslime_always_current_session = 1
+let g:tslime_always_current_window = 1
 
+autocmd vimrc FileType scheme nunmap ,r
+autocmd vimrc FileType scheme ounmap ,r
+autocmd vimrc FileType scheme vmap ,r <Plug>SendSelectionToTmux
+
+
+" [Plugin] commentary
 " Usage: gc{motion}
 " for example, gcap to comment out a paragraph
 
@@ -75,7 +103,7 @@ set noundofile
 set nobackup
 
 syntax enable
-colorscheme desert
+colorscheme monokai
 
 " show invisible characters
 highlight WhitespaceEOL ctermbg=red guibg=red
@@ -97,6 +125,16 @@ set nowrap
 set nocursorline
 autocmd vimrc InsertEnter,InsertLeave * set cursorline!
 
+" auto open Quickfix
+autocmd QuickfixCmdPost make,grep,grepadd,vimgrep if len(getqflist()) != 0 | copen | endif
+
+" diff
+if has('patch-8.1.360')
+    set diffopt=internal,filler,vertical,algorithm:histogram,indent-heuristic
+else
+    set diffopt=filler,vertical
+endif
+
 
 " status line
 "----------------------------------------------------------------------------
@@ -106,7 +144,12 @@ set statusline+=%t\     " filename
 set statusline+=%h%m%r%w\                    " flags
 set statusline+=[%{strlen(&ft)?&ft:'none'},  " filetype
 set statusline+=%{strlen(&fenc)?&fenc:&enc}, " encoding
-set statusline+=%{&ff}]                      " file format
+set statusline+=%{&ff}]\ \                   " file format
+
+" syntastic
+set statusline+=%#warningmsg#
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
 
 set statusline+=%=      "left/right separator
 
@@ -135,6 +178,9 @@ let mapleader = "\<Space>"
 " edit .vimrc
 nnoremap <leader>ev :tabedit $MYVIMRC<CR>
 
+" vertical help
+nnoremap <leader>h :vert help<Space>
+
 " terminal
 tnoremap <Esc> <C-\><C-n>
 
@@ -142,23 +188,26 @@ tnoremap <Esc> <C-\><C-n>
 nnoremap <silent> <leader>fb :Buffers<CR>
 nnoremap <silent> <leader>ff :Files<CR>
 
+" syntastic
+nnoremap <silent> <leader>se :Errors<CR>
+nnoremap <silent> <leader>ss :SyntasticCheck<CR>
+nnoremap <silent> <leader>si :SyntasticInfo<CR>
+
 " Buffers
-nnoremap <silent> <leader>bl :buffers<CR>:buffer<Space>
+nnoremap <silent> <leader>bs :buffers<CR>:buffer<Space>
+nnoremap <silent> <leader>bc :bdelete<CR>
+
 nnoremap <silent> <leader>bn :bnext<CR>
 nnoremap <silent> <leader>bp :bprevious<CR>
-nnoremap <silent> <leader>bd :bdelete<CR>
+nnoremap <silent> <leader>bf :bfirst<CR>
+nnoremap <silent> <leader>bl :blast<CR>
 
 " Windows
+nnoremap <silent> <leader>wo <C-W>v
+nnoremap <silent> <leader>wc <C-W>c
+
 nnoremap <silent> <leader>wn <C-W>w
 nnoremap <silent> <leader>wp <C-W>W
-
-nnoremap <silent> <leader>wT <C-W>T
-
-nnoremap <silent> <leader>wc <C-W>c
-nnoremap <silent> <leader>wo <C-W>o
-
-nnoremap <silent> <leader>ws <C-W>s
-nnoremap <silent> <leader>wv <C-W>v
 
 nnoremap <silent> <leader>wh <C-W>h
 nnoremap <silent> <leader>wj <C-W>j
@@ -170,24 +219,43 @@ nnoremap <silent> <leader>wJ <C-W>J
 nnoremap <silent> <leader>wK <C-W>K
 nnoremap <silent> <leader>wL <C-W>L
 
+nnoremap <silent> <leader>w< <C-W><
+nnoremap <silent> <leader>w> <C-W>>
+nnoremap <silent> <leader>w+ <C-W>+
+nnoremap <silent> <leader>w- <C-W>-
+nnoremap <silent> <leader>w= <C-W>=
+
 " Tabs
-nnoremap <silent> <leader>te :tabedit<Space>
+nnoremap <silent> <leader>to :tabedit<CR>
+nnoremap <silent> <leader>tc :tabclose<CR>
 
 nnoremap <silent> <leader>tn :tabnext<CR>
 nnoremap <silent> <leader>tp :tabprevious<CR>
-
-nnoremap <silent> <leader>tc :tabclose<CR>
-nnoremap <silent> <leader>to :tabonly<CR>
+nnoremap <silent> <leader>tf :tabfirst<CR>
+nnoremap <silent> <leader>tl :tablast<CR>
 
 " Args
 nnoremap <silent> <leader>an :next<CR>
 nnoremap <silent> <leader>ap :previous<CR>
+nnoremap <silent> <leader>af :first<CR>
+nnoremap <silent> <leader>al :last<CR>
+
+" Locations
+nnoremap <silent> <leader>lc :lclose<CR>
+
+nnoremap <silent> <leader>ln :lnext<CR>
+nnoremap <silent> <leader>lp :lprevious<CR>
+nnoremap <silent> <leader>lf :lfirst<CR>
+nnoremap <silent> <leader>ll :llast<CR>
 
 " quickfix
 nnoremap <silent> <leader>co :copen<CR>
 nnoremap <silent> <leader>cc :cclose<CR>
+
 nnoremap <silent> <leader>cn :cnext<CR>
 nnoremap <silent> <leader>cp :cprevious<CR>
+nnoremap <silent> <leader>cf :cfirst<CR>
+nnoremap <silent> <leader>cl :clast<CR>
 
 " no highlight
 nnoremap <Esc><Esc> :<C-u>nohlsearch<CR>
@@ -199,6 +267,11 @@ nnoremap <Leader>q :wq<CR>
 " compile
 nnoremap <Leader>m :make<CR>
 
+" command mode
+cnoremap <C-a> <Home>
+cnoremap <C-b> <C-Left>
+
+
 " clip board
 vnoremap <Leader>y "+y
 vnoremap <Leader>d "+d
@@ -209,7 +282,6 @@ nnoremap <Leader>y "+y
 nnoremap <Leader>d "+d
 nnoremap <Leader>p "+p
 nnoremap <Leader>P "+P
-
 
 " get current buffer's directory
 cnoremap <expr> %% getcmdtype() == ':' ? expand('%:h') . '/' : '%%'
@@ -224,13 +296,3 @@ set shiftwidth=4
 
 set autoindent
 set smartindent
-
-
-" template
-"----------------------------------------------------------------------------
-
-" augroup vimrc
-"     autocmd BufNewFile *.py   execute '0read' . s:my_vim_dir . '/templates/a.py'
-"     autocmd BufNewFile *.c    execute '0read' . s:my_vim_dir . '/templates/a.c'
-"     autocmd BufNewFile *.html execute '0read' . s:my_vim_dir . '/templates/a.html'
-" augroup END
