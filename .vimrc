@@ -1,21 +1,3 @@
-if has('win32') || has('win32unix') || has('win64')
-    set encoding=utf-8
-    set fileencoding=utf-8
-    set fileencodings=utf-8,cp932
-    set fileformat=unix
-    set fileformats=unix,dos
-
-    set backspace=indent,eol,start
-endif
-
-if has('vim_starting')
-    if has('nvim')
-        let s:my_vim_dir = stdpath('config')
-    else
-        let s:my_vim_dir = expand('~.vim')
-    endif
-endif
-
 augroup vimrc
   autocmd!
 augroup END
@@ -40,14 +22,12 @@ Plug 'airblade/vim-gitgutter'
 Plug 'mileszs/ack.vim'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'kovisoft/slimv'
-Plug 'jgdavey/tslime.vim'
-
-if has('nvim')
-    Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-    Plug 'Shougo/neocomplcache.vim'
-endif
+Plug 'valloric/youcompleteme'
+Plug 'luochen1990/rainbow'
+Plug 'guns/vim-clojure-static'
+Plug 'tpope/vim-fireplace'
+Plug 'guns/vim-sexp'
+Plug 'tpope/vim-sexp-mappings-for-regular-people'
 
 call plug#end()
 
@@ -56,6 +36,11 @@ call plug#end()
 if executable('ag')
     let g:ackprg = 'ag --vimgrep'
 endif
+
+
+" [Plugin] commentary
+" Usage: gc{motion}
+" for example, gcap to comment out a paragraph
 
 
 " [Plugin] syntastic
@@ -67,35 +52,23 @@ let g:syntastic_always_populate_loc_list = 1
 let g:syntastic_check_on_open = 1
 let g:syntastic_check_on_wq = 0
 
-
-if has('nvim')
-    " [Plugin] deoplete
-    let g:deoplete#enable_at_startup = 1
-else
-    " [Plugin] neocomplcache
-    let g:neocomplcache_enable_at_startup = 1
-endif
-
-
-" [Plugin] slimv
-let g:slimv_swank_cmd = '! tmux new-window -d -n REPL-SBCL "sbcl --load ' . s:my_vim_dir . '/plugged/slimv/slime/start-swank.lisp"'
-let g:lisp_rainbow = 1
-let g:slimv_repl_split = 4  " rightbelow vsplit
-let g:paredit_mode = 0
+" [Plugin] rainbow
+let g:rainbow_active = 1
+let g:rainbow_conf = {
+      \  'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+      \  'ctermfgs': ['lightblue', 'lightyellow', 'lightcyan', 'lightmagenta'],
+      \  'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
+      \  'separately': {
+      \      '*': 0,
+      \      'clojure': {},
+      \  }
+      \}
 
 
-" [Plugin] tslime
-let g:tslime_always_current_session = 1
-let g:tslime_always_current_window = 1
-
-autocmd vimrc FileType scheme nunmap ,r
-autocmd vimrc FileType scheme ounmap ,r
-autocmd vimrc FileType scheme vmap ,r <Plug>SendSelectionToTmux
-
-
-" [Plugin] commentary
-" Usage: gc{motion}
-" for example, gcap to comment out a paragraph
+" [Plugin] fireplace
+autocmd vimrc FileType clojure nnoremap ,d :Eval<CR>
+autocmd vimrc FileType clojure nmap ,e cpp
+autocmd vimrc FileType clojure vnoremap ,r :Eval<CR>
 
 "----------------------------------------------------------------------------
 
@@ -126,7 +99,7 @@ set nocursorline
 autocmd vimrc InsertEnter,InsertLeave * set cursorline!
 
 " auto open Quickfix
-autocmd QuickfixCmdPost make,grep,grepadd,vimgrep if len(getqflist()) != 0 | copen | endif
+autocmd vimrc QuickfixCmdPost make,grep,grepadd,vimgrep if len(getqflist()) != 0 | copen | endif
 
 " diff
 if has('patch-8.1.360')
@@ -135,6 +108,17 @@ else
     set diffopt=filler,vertical
 endif
 
+set backspace=indent,eol,start
+
+runtime ftplugin/man.vim
+
+function! ToUTF8()
+    edit ++enc=cp932
+    set fileencoding=utf8
+    set fileformat=unix
+endfunction
+
+command! ToUTF8 call ToUTF8()
 
 " status line
 "----------------------------------------------------------------------------
