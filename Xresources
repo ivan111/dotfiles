@@ -1,0 +1,51 @@
+!! ~/.Xresources
+
+!!
+!! rxvt-unicode (urxvt)
+!!
+
+URxvt.geometry:             96x32
+URxvt.scrollBar_right:      true
+URxvt.scrollBar_floating:   true
+URxvt.scrollstyle:          plain
+URxvt.cursorBlink:          true
+!URxvt.cursorUnderline:      true
+URxvt.pointerBlank:         true
+!URxvt.visualBell:           true
+URxvt.saveLines:            3000
+URxvt.fading:               40
+
+!! Font list and Spacing
+URxvt.font:                 xft:Terminus-12
+!URxvt.letterSpace:          -1
+!URxvt.lineSpace:            0
+
+!! Color Scheme and Opacity - gruvbox-dark https://github.com/morhetz/gruvbox
+URxvt.depth:                32
+URxvt.color0:               #282828
+URxvt.color1:               #cc241d
+URxvt.color2:               #98971a
+URxvt.color3:               #d79921
+URxvt.color4:               #458588
+URxvt.color5:               #b16286
+URxvt.color6:               #689d6a
+URxvt.color7:               #a89984
+URxvt.color8:               #928374
+URxvt.color9:               #fb4934
+URxvt.color10:              #b8bb26
+URxvt.color11:              #fabd2f
+URxvt.color12:              #83a598
+URxvt.color13:              #d3869b
+URxvt.color14:              #8ec07c
+URxvt.color15:              #ebdbb2
+URxvt.foreground:           #ebdbb2
+URxvt.background:           #282828
+URxvt.colorIT:              #8ec07c
+URxvt.colorBD:              #d5c4a1
+URxvt.colorUL:              #83a598
+URxvt.scrollColor:          #504945
+!URxvt.troughColor:          #3C3836
+
+URxvt.perl-ext-common:      xim-onthespot
+URxvt.inputMethod:          fcitx
+URxvt.preeditType:          OnTheSpot

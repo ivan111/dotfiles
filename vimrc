@@ -24,8 +24,6 @@ Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'valloric/youcompleteme'
 Plug 'luochen1990/rainbow'
-Plug 'guns/vim-clojure-static'
-Plug 'tpope/vim-fireplace'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
 
@@ -64,11 +62,6 @@ let g:rainbow_conf = {
       \  }
       \}
 
-
-" [Plugin] fireplace
-autocmd vimrc FileType clojure nnoremap ,d :Eval<CR>
-autocmd vimrc FileType clojure nmap ,e cpp
-autocmd vimrc FileType clojure vnoremap ,r :Eval<CR>
 
 "----------------------------------------------------------------------------
 
@@ -119,6 +112,8 @@ function! ToUTF8()
 endfunction
 
 command! ToUTF8 call ToUTF8()
+
+autocmd vimrc BufRead /tmp/mutt-* set textwidth=72
 
 " status line
 "----------------------------------------------------------------------------
