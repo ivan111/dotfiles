@@ -15,4 +15,5 @@ lnif $dotfiles/bash_profile $HOME/.bash_profile
 lnif $dotfiles/gitconfig $HOME/.gitconfig
 lnif $dotfiles/vimrc $HOME/.vimrc
 lnif $dotfiles/xinitrc $HOME/.xinitrc
+lnif $dotfiles/xmonad $HOME/.xmonad
 lnif $dotfiles/Xresources $HOME/.Xresources
