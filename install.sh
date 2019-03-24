@@ -13,6 +13,8 @@ lnif() {
 lnif $dotfiles/bash_aliases $HOME/.bash_aliases
 lnif $dotfiles/bash_profile $HOME/.bash_profile
 lnif $dotfiles/gitconfig $HOME/.gitconfig
+lnif $dotfiles/mutt $HOME/.mutt
+lnif $dotfiles/procmailrc $HOME/.procmailrc
 lnif $dotfiles/vimrc $HOME/.vimrc
 lnif $dotfiles/xinitrc $HOME/.xinitrc
 lnif $dotfiles/xmonad $HOME/.xmonad

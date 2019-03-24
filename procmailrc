@@ -1,0 +1,5 @@
+PATH=/bin:/usr/bin
+MAILDIR=$HOME/mail
+DEFAULT=$HOME/mail/inbox/
+LOGFILE=/dev/null
+SHELL=/bin/sh

@@ -1,0 +1,19 @@
+set mbox_type=Maildir
+set folder=~/mail
+set spoolfile=+inbox
+set mbox=+mbox
+set record=+sent
+set postponed=+postponed
+set header_cache=~/.cache/mutt
+set sendmail="/usr/bin/msmtp -a gmail"
+
+set alias_file=~/.mutt/aliases
+source $alias_file
+
+# source ~/.mutt/gpg.rc
+
+set editor="vim"
+set send_charset="us-ascii:iso-2022-jp:utf-8"
+
+macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"

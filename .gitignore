@@ -1,2 +1,4 @@
+mutt/aliases
+mutt/gpg.rc
 xmonad/*
 !xmonad/*.hs
