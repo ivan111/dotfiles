@@ -16,7 +16,7 @@ URxvt.saveLines:            3000
 URxvt.fading:               40
 
 !! Font list and Spacing
-URxvt.font:                 xft:xos4 Terminus-14
+URxvt.font:                 xft:DejaVu Sans Mono-12, xft:IPAGothic
 !URxvt.letterSpace:          -1
 !URxvt.lineSpace:            0
 
