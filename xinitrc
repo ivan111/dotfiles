@@ -40,4 +40,10 @@ export DefaultIMModule=fcitx
 numlockx
 fcitx
 
+urxvtd -q -f -o
+urxvtc &
+
+chromium &
+anki &
+
 exec xmonad

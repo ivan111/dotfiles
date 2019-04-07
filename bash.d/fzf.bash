@@ -10,6 +10,12 @@ fd() {
     cd "$dir"
 }
 
+frm() {
+    local files
+    IFS=$'\n' files=($(ls -p | grep -v / | fzf --query="$1" --multi --select-1))
+    [[ -n "$files" ]] && rm -i "${files[@]}"
+}
+
 fbr() {
     local branches branch
     branches=$(git branch -vv) &&
