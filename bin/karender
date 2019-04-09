@@ -1,0 +1,92 @@
+#!/usr/bin/env python3
+
+import datetime
+from os.path import expanduser, isfile
+import sys
+import re
+
+DATA_PATH = '~/.karender'
+SHOW_DAYS = 14
+DATE_FORMAT = '%Y-%m-%d (%a)'
+ITEMS_SEPARATOR = ' | '
+
+data_path = expanduser(DATA_PATH)
+
+DATA_EXAMPLE = '''
+Example:
+# this is a comment line.
+2019-04-13 final game
+*-04-11 Kayama's Birthday
+*-*-31 karaoke
+'''
+
+if not isfile(data_path):
+    print('not exists: ' + DATA_PATH, file=sys.stderr)
+    print(DATA_EXAMPLE, file=sys.stderr)
+    sys.exit(1)
+
+RE_LINE = re.compile(r'^(?P<date>(\d{4}|\*)-(\d{1,2}|\*)-\d{1,2})[\s\t]+(?P<body>.+)$')
+
+today = datetime.datetime.today().date()
+
+def expand_star(date_str):
+    y_str, m_str, d_str = date_str.split('-')
+
+    d = int(d_str)
+
+    if y_str == '*':
+        y = today.year
+    else:
+        y = int(y_str)
+
+    if m_str == '*':
+        if d < today.day:
+            m = today.month + 1
+
+            if m > 12:
+                m = 1
+                y += 1
+        else:
+            m = today.month
+    else:
+        m = int(m_str)
+
+    return datetime.date(y, m, d)
+
+data = {}
+
+with open(data_path) as f:
+    for i, src_line in enumerate(f):
+        line = src_line.strip()
+
+        if line == '' or line[0] == '#':
+            continue
+
+        m = RE_LINE.match(line)
+
+        if m is None:
+            print('Error: (' + str(i + 1) + ') ' + line, file=sys.stderr)
+            print(DATA_EXAMPLE, file=sys.stderr)
+            sys.exit(2)
+
+        date = expand_star(m.group('date'))
+        body = m.group('body')
+
+        if date >= today and (date - today).days < SHOW_DAYS:
+            if date not in data:
+                data[date] = []
+
+            data[date].append(body)
+
+date = today
+
+for i in range(SHOW_DAYS):
+    print(date.strftime(DATE_FORMAT), end='  ')
+
+    if date in data:
+        items = ITEMS_SEPARATOR.join(data[date])
+        print(items, end='')
+
+    print()
+
+    date += datetime.timedelta(days=1)

@@ -33,3 +33,9 @@ lnif $dotfiles/vimrc $HOME/.vimrc
 lnif $dotfiles/xinitrc $HOME/.xinitrc
 lnif $dotfiles/xmonad $HOME/.xmonad
 lnif $dotfiles/Xresources $HOME/.Xresources
+
+if [ ! -d "$HOME/bin" ]; then
+    mkdir $HOME/bin
+fi
+
+lnif $dotfiles/bin/karender $HOME/bin/karender
