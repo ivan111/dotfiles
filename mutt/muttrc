@@ -17,3 +17,5 @@ set send_charset="us-ascii:iso-2022-jp:utf-8"
 
 macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+
+macro pager \cj "<pipe-message> iconv -f iso-2022-jp-2 -t utf-8<Enter>"

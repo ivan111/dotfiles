@@ -8,7 +8,7 @@ URxvt.geometry:             96x32
 URxvt.scrollBar_right:      true
 URxvt.scrollBar_floating:   true
 URxvt.scrollstyle:          plain
-URxvt.cursorBlink:          true
+URxvt.cursorBlink:          false
 URxvt.cursorUnderline:      false
 URxvt.pointerBlank:         true
 URxvt.urgentOnBell:         true

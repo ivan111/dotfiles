@@ -43,6 +43,8 @@ fcitx
 urxvtd -q -f -o
 urxvtc &
 
+dunst &
+
 chromium &
 anki &
 
