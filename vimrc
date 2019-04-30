@@ -108,8 +108,8 @@ runtime ftplugin/man.vim
 
 function! ToUTF8()
     edit ++enc=cp932
-    set fileencoding=utf8
-    set fileformat=unix
+    setlocal fileencoding=utf8
+    setlocal fileformat=unix
 endfunction
 
 command! ToUTF8 call ToUTF8()
