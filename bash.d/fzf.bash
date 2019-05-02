@@ -30,3 +30,9 @@ fmpc() {
                   sed -n 's/^\([0-9]\+\)).*/\1/p') || return 1
     [ -n "$song_position" ] && mpc -q play $song_position
 }
+
+fmail() {
+    local file
+    file=$(find ~/.getmail/*rc -printf "%f\n" | fzf --no-multi --select-1) &&
+    getmail -r "$file"
+}
