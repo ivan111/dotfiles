@@ -15,7 +15,39 @@ source $alias_file
 set editor="vim"
 set send_charset="us-ascii:iso-2022-jp:utf-8"
 
-macro index,pager \cb "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
-macro attach,compose \cb "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+set sort=reverse-date
+
+
+#------------------------------------------------------------------------------
+# key bindings
+
+macro index,pager b "<pipe-message> urlscan<Enter>" "call urlscan to extract URLs out of a message"
+macro attach,compose b "<pipe-entry> urlscan<Enter>" "call urlscan to extract URLs out of a message"
 
 macro pager \cj "<pipe-message> iconv -f iso-2022-jp-2 -t utf-8<Enter>"
+
+bind index,browser j next-entry
+bind index,browser k previous-entry
+bind index,browser gg first-entry
+bind index,browser G last-entry
+
+bind pager j next-line
+bind pager k previous-line
+bind pager gg top
+bind pager G bottom
+bind pager d half-down
+bind pager u half-up
+bind index,pager x delete-message
+
+
+#------------------------------------------------------------------------------
+# index view
+
+set date_format = "%m/%d"
+set index_format = "[%?X?A& ?%Z]  %D  %-20.20F  %s"
+
+
+#------------------------------------------------------------------------------
+# pager view
+
+set pager_stop
