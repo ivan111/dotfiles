@@ -5,10 +5,18 @@ set mbox=+mbox
 set record=+sent
 set postponed=+postponed
 set header_cache=~/.cache/mutt
-set sendmail="/usr/bin/msmtp -a gmail"
+set sendmail="/usr/bin/msmtp"
+set realname=""
+set use_from="yes"
+set envelope_from="yes"
+set edit_headers="yes"
 
 set alias_file=~/.mutt/aliases
 source $alias_file
+
+unset confirmappend
+folder-hook . set trash="=trash"
+folder-hook trash$ unset trash
 
 # source ~/.mutt/gpg.rc
 
@@ -35,16 +43,19 @@ bind pager j next-line
 bind pager k previous-line
 bind pager gg top
 bind pager G bottom
-bind pager d half-down
-bind pager u half-up
+bind index,pager d half-down
+bind index,pager u half-up
 bind index,pager x delete-message
+bind index,pager X undelete-message
+bind pager n next-undeleted
+bind pager p previous-undeleted
 
 
 #------------------------------------------------------------------------------
 # index view
 
-set date_format = "%m/%d"
-set index_format = "[%?X?A& ?%Z]  %D  %-20.20F  %s"
+set date_format="%m/%d"
+set index_format="[%?X?A& ?%Z]  %D  %-20.20F  %s"
 
 
 #------------------------------------------------------------------------------
