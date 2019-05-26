@@ -48,4 +48,4 @@ dunst &
 chromium &
 anki &
 
-exec xmonad
+exec i3

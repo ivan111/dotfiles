@@ -31,11 +31,16 @@ lnif $dotfiles/mutt $HOME/.mutt
 lnif $dotfiles/procmailrc $HOME/.procmailrc
 lnif $dotfiles/vimrc $HOME/.vimrc
 lnif $dotfiles/xinitrc $HOME/.xinitrc
-lnif $dotfiles/xmonad $HOME/.xmonad
 lnif $dotfiles/Xresources $HOME/.Xresources
 
-if [ ! -d "$HOME/bin" ]; then
-    mkdir $HOME/bin
+if [ ! -d "$HOME/.config/i3" ]; then
+    mkdir $HOME/.config/i3
 fi
 
-lnif $dotfiles/bin/karender $HOME/bin/karender
+lnif $dotfiles/i3.conf $HOME/.config/i3/config
+
+if [ ! -d "$HOME/.config/i3status" ]; then
+    mkdir $HOME/.config/i3status
+fi
+
+lnif $dotfiles/i3status.conf $HOME/.config/i3status/config
