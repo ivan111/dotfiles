@@ -10,6 +10,9 @@ set realname=""
 set use_from="yes"
 set envelope_from="yes"
 set edit_headers="yes"
+set mailcap_path=~/.mutt/mailcap
+
+auto_view text/html
 
 set alias_file=~/.mutt/aliases
 source $alias_file
