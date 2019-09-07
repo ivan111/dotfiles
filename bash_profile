@@ -4,7 +4,8 @@
 
 [[ -f ~/.bashrc ]] && . ~/.bashrc
 
-export PATH="$PATH:$HOME/bin:$HOME/opt/cross/bin"
+export GOPATH=$(go env GOPATH)
+export PATH="$PATH:$HOME/bin:$HOME/opt/cross/bin:$GOPATH/bin"
 
 # MPD daemon start (if no other user instance exists)
 [ ! -s ~/.config/mpd/pid ] && mpd

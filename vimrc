@@ -26,6 +26,7 @@ Plug 'valloric/youcompleteme'
 Plug 'luochen1990/rainbow'
 Plug 'guns/vim-sexp'
 Plug 'tpope/vim-sexp-mappings-for-regular-people'
+Plug 'fatih/vim-go'
 
 call plug#end()
 
