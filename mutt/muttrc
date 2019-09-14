@@ -13,6 +13,7 @@ set edit_headers="yes"
 set mailcap_path=~/.mutt/mailcap
 
 auto_view text/html
+alternative_order text/plain text/html
 
 set alias_file=~/.mutt/aliases
 source $alias_file
